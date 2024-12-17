@@ -1,31 +1,31 @@
 heat_template_version: 2015-04-30
 
-description: Simple template to deploy a single compute instance with volume
+description: infra
 
 resources:
-  # Ресурс для создания сервера
   my_instance:
     type: OS::Nova::Server
     properties:
-      key_name: skhomets
+      key_name: saubanov
       image: ubuntu-20.04
       flavor: m1.small
       networks:
         - port: { get_resource: server_port }
-      block_device_mapping_v2:
-        - device_name: vda
-          volume_id: { get_resource: my_volume }
-          delete_on_termination: true
-
-  # Ресурс для порта сервера
+  
   server_port:
     type: OS::Neutron::Port
     properties:
       network_id: "17eae9b6-2168-4a07-a0d3-66d5ad2a9f0e"
-
-  # Ресурс для тома
+  
   my_volume:
     type: OS::Cinder::Volume
     properties:
-      size: 10  # Размер тома в ГБ
-      name: "my_volume"
+      size: 10
+      name: my_volume_name
+  
+  volume_attachment:
+    type: OS::Cinder::VolumeAttachment
+    properties:
+      instance_uuid: { get_resource: my_instance }
+      volume_id: { get_resource: my_volume }
+      mountpoint: /dev/vdb
