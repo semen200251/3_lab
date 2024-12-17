@@ -29,4 +29,3 @@ resources:
     properties:
       size: 10  # Размер тома в ГБ
       name: "my_volume"
-      volume_type: "default"  # Укажите тип тома, если используется
